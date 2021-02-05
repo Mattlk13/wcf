@@ -28,12 +28,17 @@ public static partial class Endpoints
         get { return GetEndpointAddress("BasicHttp.svc//Basic"); }
     }
 
+    public static string HttpBaseAddress_BasicService1
+    {
+        get { return GetEndpointAddress("BasicService1.svc//Service1"); }
+    }
+
     // Endpoint that relies on post-1.1.0 features
     public static string HttpBaseAddress_4_4_0_Basic
     {
         get { return GetEndpointAddress("BasicHttp_4_4_0.svc//Basic"); }
     }
-    
+
     public static string HttpBaseAddress_Basic_Soap
     {
         get { return GetEndpointAddress("BasicHttpSoap.svc//Basic"); }
@@ -73,7 +78,7 @@ public static partial class Endpoints
 	{
 		get { return GetEndpointAddress("HttpSoap12WSA2004.svc//http-Soap12WSA2004"); }
 	}
-	
+
     public static string HttpBinary_Address
     {
         get { return GetEndpointAddress("HttpBinary.svc//http-binary"); }
@@ -127,6 +132,31 @@ public static partial class Endpoints
     public static string BasicHttpDocLitDualNs_Address
     {
         get { return GetEndpointAddress("BasicHttpDocLitDualNs.svc//Basic"); }
+    }
+
+    public static string BasicHttpRpcEncWithHeaders_Address
+    {
+        get { return GetEndpointAddress("BasicHttpRpcEncWithHeaders.svc//Basic"); }
+    }
+
+    public static string ReliableSession_NetHttp
+    {
+        get { return GetEndpointAddress("ReliableSessionService.svc/NetHttp"); }
+    }
+
+    public static string ReliableOneWaySession_NetHttp
+    {
+        get { return GetEndpointAddress("ReliableSessionOneWayService.svc/NetHttp"); }
+    }
+
+    public static string ReliableSession_WSHttp
+    {
+        get { return GetEndpointAddress("ReliableSessionService.svc/WSHttp"); }
+    }
+
+    public static string ReliableOneWaySession_WSHttp
+    {
+        get { return GetEndpointAddress("ReliableSessionOneWayService.svc/WSHttp"); }
     }
 
     #region WebSocket Addresses
@@ -370,6 +400,22 @@ public static partial class Endpoints
         }
     }
 
+    public static string Https2007_SecModeTransWithMessCred_ClientCredTypeCert
+    {
+        get
+        {
+            return GetEndpointAddress("HttpsTransSecMessCredsCert.svc//https2007-message-credentials-cert", protocol: "https");
+        }
+    }
+
+    public static string Https2007_SecModeTransWithMessCred_ClientCredTypeUserName
+    {
+        get
+        {
+            return GetEndpointAddress("HttpsTransSecMessCredsUserName.svc//https2007-message-credentials-username", protocol: "https");
+        }
+    }
+
     public static string BasicHttps_SecModeTransWithMessCred_ClientCredTypeCert
     {
         get
@@ -383,6 +429,22 @@ public static partial class Endpoints
         get
         {
             return GetEndpointAddress("BasicHttpsTransSecMessCredsUserName.svc//https-message-credentials-username", protocol: "https");
+        }
+    }
+
+    public static string WSFederationAuthorityLocalSTS
+    {
+        get
+        {
+            return GetEndpointAddress("LocalSTS.svc/", protocol: "https");
+        }
+    }
+
+    public static string Https_SecModeTransWithMessCred_ClientCredTypeIssuedTokenSaml2
+    {
+        get
+        {
+            return GetEndpointAddress("Saml2IssuedToken.svc/issued-token-using-tls/", protocol: "https");
         }
     }
 
@@ -674,10 +736,27 @@ public static partial class Endpoints
 
     public static string Tcp_SecModeTransWithMessCred_ClientCredTypeUserName
     {
-        get
-        {
-            return GetEndpointAddress("TcpTransSecMessCredsUserName.svc//tcp-message-credentials-username", protocol: "net.tcp");
-        }
+        get { return GetEndpointAddress("TcpTransSecMessCredsUserName.svc//tcp-message-credentials-username", protocol: "net.tcp"); }
+    }
+
+    public static string ReliableSession_NetTcp
+    {
+        get { return GetEndpointAddress("ReliableSessionService.svc/NetTcp", protocol: "net.tcp"); }
+    }
+
+    public static string ReliableOneWaySession_NetTcp
+    {
+        get { return GetEndpointAddress("ReliableSessionOneWayService.svc/NetTcp", protocol: "net.tcp"); }
+    }
+
+    public static string ReliableDuplexSession_NetTcp
+    {
+        get { return GetEndpointAddress("ReliableSessionDuplexService.svc/NetTcp", protocol: "net.tcp"); }
+    }
+
+    public static string DuplexCallbackConcurrencyMode_Address
+    {
+        get { return GetEndpointAddress("DuplexCallbackConcurrencyMode.svc/tcp", protocol: "net.tcp"); }
     }
     #endregion net.tcp Addresses
 }

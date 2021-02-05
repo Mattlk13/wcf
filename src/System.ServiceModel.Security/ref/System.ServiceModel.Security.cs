@@ -22,6 +22,7 @@ namespace System.ServiceModel
         public static System.ServiceModel.MessageSecurityVersion WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10 { get { return default; } }
         public static System.ServiceModel.MessageSecurityVersion WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11 { get { return default; } }
         public static System.ServiceModel.MessageSecurityVersion WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10 { get { return default; } }
+        public static System.ServiceModel.MessageSecurityVersion WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10 { get { return default; } }
     }
     public partial class SpnEndpointIdentity : System.ServiceModel.EndpointIdentity
     {
@@ -31,6 +32,11 @@ namespace System.ServiceModel
     public partial class UpnEndpointIdentity : System.ServiceModel.EndpointIdentity
     {
         public UpnEndpointIdentity(string upnName) { }
+    }
+    public partial class X509CertificateEndpointIdentity : System.ServiceModel.EndpointIdentity
+    {
+        public X509CertificateEndpointIdentity(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) { }
+        public System.Security.Cryptography.X509Certificates.X509Certificate2Collection Certificates { get; }
     }
 }
 namespace System.ServiceModel.Channels
@@ -46,6 +52,7 @@ namespace System.ServiceModel.Channels
     public sealed partial class LocalClientSecuritySettings
     {
         public LocalClientSecuritySettings() { }
+        public bool DetectReplays { get { return default; } set { } }
         public System.TimeSpan MaxClockSkew { get { return default; } set { } }
         public System.TimeSpan ReplayWindow { get { return default; } set { } }
         public System.TimeSpan TimestampValidityDuration { get { return default; } set { } }
@@ -103,6 +110,7 @@ namespace System.ServiceModel.Security
         public System.Xml.XmlDictionaryString Namespace { get { return default; } }
         public System.Xml.XmlDictionaryString Prefix { get { return default; } }
         public static System.ServiceModel.Security.SecureConversationVersion WSSecureConversationFeb2005 { get { return default; } }
+        public static System.ServiceModel.Security.SecureConversationVersion WSSecureConversation13 { get { return default; } }
     }
     public abstract partial class SecurityAlgorithmSuite
     {
@@ -125,6 +133,7 @@ namespace System.ServiceModel.Security
         public string Namespace { get { return default; } }
         public string Prefix { get { return default; } }
         public static System.ServiceModel.Security.SecurityPolicyVersion WSSecurityPolicy11 { get { return default; } }
+        public static System.ServiceModel.Security.SecurityPolicyVersion WSSecurityPolicy12 { get { return default; } }
     }
     public abstract partial class SecurityVersion
     {
@@ -139,6 +148,7 @@ namespace System.ServiceModel.Security
         public System.Xml.XmlDictionaryString Namespace { get { return default; } }
         public System.Xml.XmlDictionaryString Prefix { get { return default; } }
         public static System.ServiceModel.Security.TrustVersion WSTrustFeb2005 { get { return default; } }
+        public static System.ServiceModel.Security.TrustVersion WSTrust13 { get { return default; } }
     }
 }
 namespace System.ServiceModel.Security.Tokens
@@ -160,6 +170,7 @@ namespace System.ServiceModel.Security.Tokens
     {
         protected IssuedSecurityTokenParameters(IssuedSecurityTokenParameters other) { }
         public IssuedSecurityTokenParameters() { }
+        protected override SecurityTokenParameters CloneCore() { return default; }
         public MessageSecurityVersion DefaultMessageSecurityVersion { get { return default; } set { } }
         public EndpointAddress IssuerAddress { get { return default; } set { } }
         public Channels.Binding IssuerBinding { get { return default; } set { } }
@@ -171,11 +182,13 @@ namespace System.ServiceModel.Security.Tokens
         public SecureConversationSecurityTokenParameters() { }
         public SecureConversationSecurityTokenParameters(System.ServiceModel.Channels.SecurityBindingElement bootstrapSecurityBindingElement) { }
         public System.ServiceModel.Channels.SecurityBindingElement BootstrapSecurityBindingElement { get { return default; } set { } }
+        protected override SecurityTokenParameters CloneCore() { return default; }
         public bool RequireCancellation { get { return default; } set { } }
     }
     public abstract partial class SecurityTokenParameters
     {
         internal SecurityTokenParameters() { }
+        protected abstract SecurityTokenParameters CloneCore();
         public bool RequireDerivedKeys { get { return default; } set { } }
         public System.ServiceModel.Security.Tokens.SecurityTokenParameters Clone() { return default; }
     }
@@ -195,6 +208,8 @@ namespace System.ServiceModel.Security.Tokens
     public partial class UserNameSecurityTokenParameters : System.ServiceModel.Security.Tokens.SecurityTokenParameters
     {
         public UserNameSecurityTokenParameters() { }
+        protected override SecurityTokenParameters CloneCore() { return default; }
+
     }
 }
 namespace System.IdentityModel.Policy
@@ -222,5 +237,21 @@ namespace System.IdentityModel.Tokens
         SymmetricKey,
         AsymmetricKey,
         BearerKey
+    }
+    public partial class GenericXmlSecurityKeyIdentifierClause : SecurityKeyIdentifierClause
+    {
+        public GenericXmlSecurityKeyIdentifierClause(System.Xml.XmlElement referenceXml)
+            : this(referenceXml, null, 0)
+        {
+        }
+
+        public GenericXmlSecurityKeyIdentifierClause(System.Xml.XmlElement referenceXml, byte[] derivationNonce, int derivationLength)
+            : base(null, derivationNonce, derivationLength)
+        {
+        }
+
+        public System.Xml.XmlElement ReferenceXml { get { return default; } }
+
+        public override bool Matches(SecurityKeyIdentifierClause keyIdentifierClause){ return default; }
     }
 }

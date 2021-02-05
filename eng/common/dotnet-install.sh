@@ -19,7 +19,7 @@ runtime='dotnet'
 runtimeSourceFeed=''
 runtimeSourceFeedKey=''
 while [[ $# > 0 ]]; do
-  opt="$(echo "$1" | awk '{print tolower($0)}')"
+  opt="$(echo "$1" | tr "[:upper:]" "[:lower:]")"
   case "$opt" in
     -version|-v)
       shift
@@ -63,7 +63,7 @@ case $cpuname in
   amd64|x86_64)
     buildarch=x64
     ;;
-  armv7l)
+  armv*l)
     buildarch=arm
     ;;
   i686)

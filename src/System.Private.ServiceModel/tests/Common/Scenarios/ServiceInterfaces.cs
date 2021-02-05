@@ -92,6 +92,16 @@ public interface IWcfService
 }
 
 [ServiceContract]
+public interface IService1
+{
+    [OperationContract]
+    string GetData(int value);
+
+    [OperationContract]
+    CompositeType GetDataUsingDataContract(CompositeType composite);
+}
+
+[ServiceContract]
 public interface IWcfProjectNRestartService
 {
     [OperationContract]
@@ -367,6 +377,19 @@ public interface IWcfDuplexService_Xml_Callback
 {
     [OperationContract, XmlSerializerFormat]
     void OnXmlPingCallback(XmlCompositeTypeDuplexCallbackOnly xmlCompositeType);
+}
+
+[ServiceContract(CallbackContract = typeof(IWcfDuplexService_CallbackConcurrencyMode_Callback))]
+public interface IWcfDuplexService_CallbackConcurrencyMode
+{
+    [OperationContract]
+    Task DoWorkAsync();
+}
+
+public interface IWcfDuplexService_CallbackConcurrencyMode_Callback
+{
+    [OperationContract]
+    Task CallWithWaitAsync(int delayTime);
 }
 
 // WebSocket Interfaces
@@ -770,6 +793,38 @@ public interface IHelloWorldDocLit
     string GetAndRemoveString(Guid guid);
 }
 
+[ServiceContract]
+public interface IEchoRpcEncWithHeadersService
+{
+    [OperationContract(Action = "http://tempuri.org/Echo", ReplyAction = "*")]
+    [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
+    EchoResponse Echo(EchoRequest request);
+}
+
+[System.Xml.Serialization.SoapType(Namespace = "http://tempuri.org/")]
+public partial class StringHeader
+{
+    public string HeaderValue { get; set; }
+}
+
+[MessageContract(WrapperName = "Echo", WrapperNamespace = "http://contoso.com/", IsWrapped = true)]
+public partial class EchoRequest
+{
+    [MessageHeader]
+    public StringHeader StringHeader;
+    [MessageBodyMember(Namespace = "", Order = 0)]
+    public string message;
+}
+
+[MessageContract(WrapperName = "EchoResponse", WrapperNamespace = "http://tempuri.org/", IsWrapped = true)]
+public partial class EchoResponse
+{
+    [MessageHeader]
+    public StringHeader StringHeader;
+    [MessageBodyMember(Namespace = "", Order = 0)]
+    public string EchoResult;
+}
+
 public class IntParams
 {
     public int P1;
@@ -786,4 +841,29 @@ public class ByteParams
 {
     public byte P1;
     public byte P2;
+}
+
+// ********************************************************************************
+
+[ServiceContract]
+public interface IWcfReliableService
+{
+    [OperationContract]
+    Task<int> GetNextNumberAsync();
+    [OperationContract]
+    Task<string> EchoAsync(string echo);
+}
+
+[ServiceContract]
+public interface IOneWayWcfReliableService
+{
+    [OperationContract(IsOneWay = true)]
+    Task OneWayAsync(string text);
+}
+
+[ServiceContract(CallbackContract = typeof(IWcfReliableDuplexService))]
+public interface IWcfReliableDuplexService
+{
+    [OperationContract]
+    Task<string> DuplexEchoAsync(string echo);
 }
